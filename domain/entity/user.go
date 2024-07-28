@@ -6,11 +6,10 @@ import (
 )
 
 type User struct {
-	ID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
-	//Phone     uint64           `json:"phone"`
-	Email     string    `json:"email" binding:"required"`
-	Password  string    `json:"password" binding:"required"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Verified  bool      `json:"verified"`
+	ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
+	Email     string    `json:"email" gorm:"unique"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Verified  bool
 }
