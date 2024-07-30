@@ -1,7 +1,16 @@
 package application
 
-//func HandleRegistration() {
-//	router := gin.Default()
-//
-//	router.GET("/api/v1/signup", repository.UserRepository())
-//}
+import (
+	"stonewall-api/migrations"
+	"github.com/gin-gonic/gin"
+)
+
+
+func HandleMigration(ctx *gin.Context) {
+	migrations.Migrate()
+
+	ctx.JSON(200, gin.H{
+		"status": "OK",
+	  })
+}
+
