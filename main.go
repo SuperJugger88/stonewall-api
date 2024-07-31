@@ -1,19 +1,13 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"os"
 	"stonewall-api/infrastructure"
-	"stonewall-api/application"
+	"stonewall-api/routes"
 )
 
 func main() {
 	infrastructure.InitDatabaseConnection()
 
-	router := gin.Default()
+	routes.GroupUserUrl()
 
-	//application.HandleRegistration()
-	router.GET("/api/v1/migration", application.HandleMigration)
-
-	router.Run(os.Getenv("API_URL"))
 }
