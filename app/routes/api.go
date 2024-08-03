@@ -8,7 +8,6 @@ import (
 )
 
 func SetupRouter(db *gorm.DB) {
-
 	router := gin.Default()
 
 	api := router.Group("/api/v1")
