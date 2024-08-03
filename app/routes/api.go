@@ -7,7 +7,7 @@ import (
 	"stonewall-api/app/controllers"
 )
 
-func HandleAuthentication(db *gorm.DB) {
+func HandleMigration(db *gorm.DB) {
 
 	router := gin.Default()
 
@@ -16,6 +16,9 @@ func HandleAuthentication(db *gorm.DB) {
 		api.GET("/migration", controllers.MigrationController{DB: db}.MakeMigration)
 	}
 
-	router.Run(os.Getenv("API_URL"))
+	err := router.Run(os.Getenv("API_URL"))
+	if err != nil {
+		panic(err)
+	}
 
 }

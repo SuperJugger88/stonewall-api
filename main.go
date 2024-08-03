@@ -8,5 +8,5 @@ import (
 func main() {
 	db := database.InitDatabaseConnection()
 
-	routes.HandleAuthentication(db)
+	routes.HandleMigration(db)
 }
