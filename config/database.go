@@ -9,8 +9,8 @@ import (
 func InitDatabaseConnection() *gorm.DB {
 
 	dsnURL := os.Getenv("DATABASE_URL") + "&application_name=$ docs_simplecrud_gorm"
-	db, err := gorm.Open(postgres.Open(dsnURL), &gorm.Config{})
 
+	db, err := gorm.Open(postgres.Open(dsnURL), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
