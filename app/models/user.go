@@ -3,10 +3,10 @@ package models
 import "gorm.io/gorm"
 
 type User struct {
-    gorm.Model
-    Name      string
-    Email     string `gorm:"size:100;not null;unique" json:"email"`
-    Password  string `gorm:"size:100;not null;" json:"password"`
+	gorm.Model
+	Name     string
+	Email    string `gorm:"size:100;not null;unique" json:"email"`
+	Password string `gorm:"size:100;not null;" json:"password"`
 }
 
 // func Hash(password string) ([]byte, error) {
