@@ -2,12 +2,11 @@ package main
 
 import (
 	"stonewall-api/app/routes"
-	database "stonewall-api/services"
+	database "stonewall-api/config"
 )
 
 func main() {
-	database.InitDatabaseConnection()
+	db := database.InitDatabaseConnection()
 
-	routes.HandleAuthentication()
-
+	routes.HandleAuthentication(db)
 }

@@ -2,11 +2,20 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	database "stonewall-api/services"
+	"gorm.io/gorm"
+	"log"
+	"stonewall-api/app/models"
 )
 
-func MakeMigration(ctx *gin.Context) {
-	database.InitDatabaseConnection()
+type MigrationController struct {
+	DB *gorm.DB
+}
+
+func (controller MigrationController) MakeMigration(ctx *gin.Context) {
+	err := controller.DB.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	ctx.JSON(200, gin.H{
 		"status": "OK",
