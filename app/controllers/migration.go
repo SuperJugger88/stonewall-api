@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"log"
+	"net/http"
 	"stonewall-api/app/models"
 )
 
@@ -17,7 +18,7 @@ func (controller MigrationController) MakeMigration(ctx *gin.Context) {
 		log.Fatal(err)
 	}
 
-	ctx.JSON(200, gin.H{
-		"status": "OK",
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": "true",
 	})
 }
