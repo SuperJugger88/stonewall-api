@@ -2,20 +2,23 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"os"
 	"stonewall-api/app/controllers"
 )
 
-func HandleAuthentication() {
+func SetupRouter(db *gorm.DB) {
 
 	router := gin.Default()
 
 	api := router.Group("/api/v1")
 	{
-		api.GET("/migration", controllers.MakeMigration)
-		api.GET("/register", controllers.RegisterUser)
+		api.GET("/migration", controllers.MigrationController{DB: db}.MakeMigration)
 	}
 
-	router.Run(os.Getenv("API_URL"))
+	err := router.Run(os.Getenv("API_URL"))
+	if err != nil {
+		panic(err)
+	}
 
 }
