@@ -7,7 +7,7 @@ import (
 	"stonewall-api/app/controllers"
 )
 
-func HandleMigration(db *gorm.DB) {
+func SetupRouter(db *gorm.DB) {
 
 	router := gin.Default()
 
