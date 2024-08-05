@@ -13,6 +13,7 @@ func SetupRouter(db *gorm.DB) {
 	api := router.Group("/api/v1")
 	{
 		api.GET("/migration", controllers.MigrationController{DB: db}.MakeMigration)
+		api.POST("/registration", controllers.RegistrationController{DB: db}.CreateUser)
 	}
 
 	err := router.Run(os.Getenv("API_URL"))
