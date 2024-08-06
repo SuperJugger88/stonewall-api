@@ -29,7 +29,7 @@ func (controller RegistrationController) CreateUser(ctx *gin.Context) {
 
 	hashedPassword, err := middleware.HashPassword(userDTO.Password)
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": "Failed to hash password"})
+		ctx.JSON(http.StatusNotAcceptable, gin.H{"error": "Failed to hash password"})
 		return
 	}
 
