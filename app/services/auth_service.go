@@ -7,7 +7,6 @@ import (
 	"os"
 	"stonewall-api/app/middleware"
 	"stonewall-api/app/models"
-	"stonewall-api/app/utils"
 )
 
 func dd(myVar ...interface{}) {
@@ -30,7 +29,7 @@ func AuthenticateUser(email, password string, DB *gorm.DB) (string, error) {
 		return "", errors.New("invalid password")
 	}
 
-	token, err := utils.GenerateJWT(user.ID)
+	token, err := middleware.GenerateJWT(user.ID)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
