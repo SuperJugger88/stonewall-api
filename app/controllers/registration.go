@@ -4,7 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
+	"stonewall-api/app/middleware"
 	"stonewall-api/app/models"
+	"stonewall-api/app/models/dto"
 )
 
 type RegistrationController struct {
@@ -12,7 +14,7 @@ type RegistrationController struct {
 }
 
 func (controller RegistrationController) CreateUser(ctx *gin.Context) {
-	var userDTO models.UserDTO
+	var userDTO dto.UserDTO
 
 	if err := ctx.ShouldBindJSON(&userDTO); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -25,7 +27,7 @@ func (controller RegistrationController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := models.HashPassword(userDTO.Password)
+	hashedPassword, err := middleware.HashPassword(userDTO.Password)
 	if err != nil {
 		ctx.JSON(http.StatusNotAcceptable, gin.H{"error": "Failed to hash password"})
 		return
