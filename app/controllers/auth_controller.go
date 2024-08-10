@@ -14,7 +14,7 @@ type AuthController struct {
 	DB *gorm.DB
 }
 
-func (controller AuthController) Login(ctx *gin.Context) {
+func (controller AuthController) LoginUser(ctx *gin.Context) {
 	err := controller.DB.AutoMigrate(&models.User{})
 	if err != nil {
 		log.Fatal(err)

@@ -15,7 +15,7 @@ func SetupRouter(db *gorm.DB) {
 	api := router.Group("/api/v1")
 	{
 		api.POST("/registration", controllers.RegistrationController{DB: db}.CreateUser)
-		api.POST("/login", controllers.AuthController{DB: db}.Login)
+		api.POST("/login", controllers.AuthController{DB: db}.LoginUser)
 		api.GET("/welcome", middleware.AuthMiddleware(), welcome)
 	}
 
