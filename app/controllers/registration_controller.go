@@ -3,10 +3,11 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
-	"stonewall-api/app/middleware"
 	"stonewall-api/app/models"
 	"stonewall-api/app/models/dto"
+	"stonewall-api/middleware"
 )
 
 type RegistrationController struct {
@@ -14,6 +15,11 @@ type RegistrationController struct {
 }
 
 func (controller RegistrationController) CreateUser(ctx *gin.Context) {
+	err := controller.DB.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var userDTO dto.UserDTO
 
 	if err := ctx.ShouldBindJSON(&userDTO); err != nil {

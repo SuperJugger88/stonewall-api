@@ -3,7 +3,9 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
+	"stonewall-api/app/models"
 	"stonewall-api/app/models/dto"
 	"stonewall-api/app/services"
 )
@@ -13,6 +15,11 @@ type AuthController struct {
 }
 
 func (controller AuthController) Login(ctx *gin.Context) {
+	err := controller.DB.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var loginDTO dto.UserDTO
 
 	if err := ctx.ShouldBindJSON(&loginDTO); err != nil {

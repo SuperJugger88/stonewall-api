@@ -6,16 +6,14 @@ import (
 	"net/http"
 	"os"
 	"stonewall-api/app/controllers"
-	"stonewall-api/app/middleware"
+	"stonewall-api/middleware"
 )
 
 func SetupRouter(db *gorm.DB) {
 	router := gin.Default()
-	//router.Use(middleware.CSRFMiddleware())
 
 	api := router.Group("/api/v1")
 	{
-		api.GET("/migration", controllers.MigrationController{DB: db}.MakeMigration)
 		api.POST("/registration", controllers.RegistrationController{DB: db}.CreateUser)
 		api.POST("/login", controllers.AuthController{DB: db}.Login)
 		api.GET("/welcome", middleware.AuthMiddleware(), welcome)
