@@ -3,17 +3,18 @@ package middleware
 import (
 	"errors"
 	jwt "github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"time"
 )
 
 var jwtKey = []byte("your_secret_key")
 
 type Claims struct {
-	UserID uint `json:"user_id"`
+	UserID uuid.UUID `json:"user_id"`
 	jwt.RegisteredClaims
 }
 
-func GenerateJWT(userID uint) (string, error) {
+func GenerateJWT(userID uuid.UUID) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		UserID: userID,

@@ -29,25 +29,25 @@ func (controller RegistrationController) CreateUser(ctx *gin.Context) {
 
 	var existingUser models.User
 	if err := controller.DB.Where("email = ?", userDTO.Email).First(&existingUser).Error; err == nil {
-		ctx.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
+		ctx.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		return
 	}
 
 	hashedPassword, err := middleware.HashPassword(userDTO.Password)
 	if err != nil {
-		ctx.JSON(http.StatusNotAcceptable, gin.H{"error": "Failed to hash password"})
+		ctx.JSON(http.StatusNotAcceptable, gin.H{"error": err.Error()})
 		return
 	}
 
 	// Преобразование DTO в модель пользователя
 	user := &models.User{
-		Password: hashedPassword,
 		Email:    userDTO.Email,
+		Password: hashedPassword,
 	}
 
 	// Сохранение пользователя в базе данных
 	if err := controller.DB.Create(&user).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
