@@ -28,7 +28,7 @@ func (controller RegistrationController) CreateUser(ctx *gin.Context) {
 	}
 
 	var existingUser models.User
-	if err := controller.DB.Where("email = ?", userDTO.Email).First(&existingUser).Error; err == nil {
+	if err := controller.DB.Where("email = ?", userDTO.Email).First(&existingUser).Error; err != nil {
 		ctx.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		return
 	}
