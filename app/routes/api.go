@@ -16,7 +16,9 @@ func SetupRouter(db *gorm.DB) {
 	{
 		api.POST("/registration", controllers.RegistrationController{DB: db}.CreateUser)
 		api.POST("/login", controllers.AuthController{DB: db}.LoginUser)
+		api.POST("/sendMail", controllers.MailController{DB: db}.SendMail)
 		api.GET("/welcome", middleware.AuthMiddleware(), welcome)
+		api.GET("/verifyMail", middleware.VerifyMailMiddleware(), welcome)
 	}
 
 	protectedGroup := router.Group("/protected")
