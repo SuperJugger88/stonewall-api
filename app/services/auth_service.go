@@ -4,7 +4,7 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"stonewall-api/app/models"
-	middleware2 "stonewall-api/middleware"
+	"stonewall-api/middleware"
 )
 
 func AuthenticateUser(email, password string, DB *gorm.DB) (string, error) {
@@ -15,11 +15,11 @@ func AuthenticateUser(email, password string, DB *gorm.DB) (string, error) {
 		return "", errors.New("user not found")
 	}
 
-	if err := middleware2.VerifyPassword(user.Password, password); err != nil {
+	if err := middleware.VerifyPassword(user.Password, password); err != nil {
 		return "", errors.New("invalid password")
 	}
 
-	token, err := middleware2.GenerateJWT(user.ID)
+	token, err := middleware.GenerateJWT(user.ID)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
