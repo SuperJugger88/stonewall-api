@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	//"github.com/joho/godotenv"
 	"gorm.io/gorm"
 	"net/http"
 	"os"
@@ -16,7 +17,9 @@ func SetupRouter(db *gorm.DB) {
 	{
 		api.POST("/registration", controllers.RegistrationController{DB: db}.CreateUser)
 		api.POST("/login", controllers.AuthController{DB: db}.LoginUser)
+		api.POST("/sendMail", controllers.MailController{DB: db}.SendMail)
 		api.GET("/welcome", middleware.AuthMiddleware(), welcome)
+		api.GET("/verifyMail", middleware.VerifyMailMiddleware(), controllers.ActivateEmailController{DB: db}.ActivateEmail)
 	}
 
 	protectedGroup := router.Group("/protected")
