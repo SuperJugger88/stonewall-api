@@ -27,22 +27,14 @@ func VerifyMailMiddleware() gin.HandlerFunc {
 			return mySigningKey, nil
 		})
 
-		//if len(err) == 0 {
-		//	ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Error parsing token"})
-		//	ctx.Abort()
-		//	return
-		//}
-
-		// Проверяем, является ли токен действительным
 		if _, ok := token.Claims.(jwt.MapClaims); !ok || !token.Valid {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Token is invalid"})
 			ctx.Abort()
 			return
 		}
 
-		// Проверяем, есть ли у токена почта
 		claims := token.Claims.(jwt.MapClaims)
-		if claims["email"] != nil {
+		if claims["email"] == nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "the token is not tied to mail"})
 			ctx.Abort()
 			return
