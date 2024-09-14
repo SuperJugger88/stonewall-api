@@ -17,7 +17,10 @@ func SetupRouter(db *gorm.DB) {
 	{
 		api.POST("/registration", controllers.RegistrationController{DB: db}.CreateUser)
 		api.POST("/login", controllers.AuthController{DB: db}.LoginUser)
-		api.POST("/sendMail", controllers.MailController{DB: db}.SendMail)
+		api.POST("/sendMail", controllers.ActivateEmailController{DB: db}.SendMail)
+		api.POST("/resetPasswordMail", controllers.ResetPasswordController{DB: db}.SendMail)
+		api.POST("/resetPassword", middleware.VerifyMailMiddleware())
+		api.POST("/updatePassword", controllers.ResetPasswordController{DB: db}.UpdatePassword)
 		api.GET("/welcome", middleware.AuthMiddleware(), welcome)
 		api.GET("/verifyMail", middleware.VerifyMailMiddleware(), controllers.ActivateEmailController{DB: db}.ActivateEmail)
 	}

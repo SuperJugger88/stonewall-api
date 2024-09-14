@@ -11,14 +11,13 @@ import (
 	"stonewall-api/app/models/dto"
 	"stonewall-api/app/models/validate"
 	"stonewall-api/middleware"
-	"time"
 )
 
-type ActivateEmailController struct {
+type ResetPasswordController struct {
 	DB *gorm.DB
 }
 
-func (controller ActivateEmailController) SendMail(ctx *gin.Context) {
+func (controller ResetPasswordController) SendMail(ctx *gin.Context) {
 	var emailDto dto.EmailDto
 	if err := ctx.ShouldBindJSON(&emailDto); err != nil {
 		// Обработка ошибок валидации
@@ -39,7 +38,7 @@ func (controller ActivateEmailController) SendMail(ctx *gin.Context) {
 	email := []string{emailDto.Email}
 
 	tokenString := middleware.GenerateTokenMailMiddleware(email, nil)
-	messageString := fmt.Sprintf("для подтверждения пароля передите по ссылке ниже: \n http://localhost:80/api/v1/verifyMail?token=%s ", tokenString)
+	messageString := fmt.Sprintf("Для того чтобы сменить пароль от вашего аккаунта перейдите по ссылке ниже: \n http://localhost:80/api/v1/resetPassword?token=%s ", tokenString)
 
 	middleware.SendEmailMiddleware(email, messageString, nil)
 
@@ -48,14 +47,35 @@ func (controller ActivateEmailController) SendMail(ctx *gin.Context) {
 	})
 }
 
-func (controller ActivateEmailController) ActivateEmail(ctx *gin.Context) {
+func (controller ResetPasswordController) UpdatePassword(ctx *gin.Context) {
 
-	tokenString := ctx.Query("token")
-	token, _ := jwt.Parse(tokenString, nil)
+	var request dto.ResetPasswordDTO
+
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		// Обработка ошибок валидации
+		if ve, ok := err.(validator.ValidationErrors); ok {
+			for _, fieldErr := range ve {
+				ctx.JSON(400, gin.H{
+					"error": fmt.Sprintf("Field %s is %s", fieldErr.Field(), fieldErr.Tag()),
+				})
+				return
+			}
+		}
+		ctx.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	token, _ := jwt.Parse(request.Token, nil)
 	claims := token.Claims.(jwt.MapClaims)
 
+	hashedPassword, err := middleware.HashPassword(request.Password)
+	if err != nil {
+		ctx.JSON(http.StatusNotAcceptable, gin.H{"error": err.Error()})
+		return
+	}
+
 	user := models.User{}
-	result := controller.DB.Model(&user).Where("email = ?", claims["email"]).Update("ActivatedAt", time.Now())
+	result := controller.DB.Model(&user).Where("email = ?", claims["email"]).Update("Password", hashedPassword)
 	if result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, result.Error)
 		return
@@ -64,4 +84,8 @@ func (controller ActivateEmailController) ActivateEmail(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "no user found with email"})
 		return
 	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": "true",
+	})
 }
