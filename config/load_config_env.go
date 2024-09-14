@@ -3,7 +3,7 @@ package config
 import "github.com/spf13/viper"
 
 type Config struct {
-	AppPort   string `mapstructure:"APP_PORT"`
+	AppUrl    string `mapstructure:"APP_URL"`
 	SmptHost  string `mapstructure:"SMPT_HOST"`
 	SmptPort  string `mapstructure:"SMPT_PORT"`
 	FromEmail string `mapstructure:"EMAIL_FROM"`

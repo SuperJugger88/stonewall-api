@@ -2,16 +2,21 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	//"github.com/joho/godotenv"
 	"gorm.io/gorm"
+	"log"
 	"net/http"
-	"os"
 	"stonewall-api/app/controllers"
+	config "stonewall-api/config"
 	"stonewall-api/middleware"
 )
 
 func SetupRouter(db *gorm.DB) {
 	router := gin.Default()
+
+	env, err := config.LoadConfig(".")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	api := router.Group("/api/v1")
 	{
@@ -33,7 +38,7 @@ func SetupRouter(db *gorm.DB) {
 		})
 	}
 
-	err := router.Run(os.Getenv("API_URL"))
+	err = router.Run(env.AppUrl)
 	if err != nil {
 		panic(err)
 	}
