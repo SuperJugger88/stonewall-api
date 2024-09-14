@@ -19,8 +19,7 @@ main
 # vendor/
 
 # Go workspace file
-go.work
-go.work.sum
+go.sum
 
 # env file
 .env
