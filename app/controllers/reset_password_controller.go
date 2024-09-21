@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -21,7 +22,8 @@ func (controller ResetPasswordController) SendMail(ctx *gin.Context) {
 	var emailDto dto.EmailDto
 	if err := ctx.ShouldBindJSON(&emailDto); err != nil {
 		// Обработка ошибок валидации
-		if ve, ok := err.(validator.ValidationErrors); ok {
+		var ve validator.ValidationErrors
+		if errors.As(err, &ve) {
 			for _, fieldErr := range ve {
 				ctx.JSON(400, gin.H{
 					"error": fmt.Sprintf("Field %s is %s", fieldErr.Field(), fieldErr.Tag()),
@@ -53,7 +55,8 @@ func (controller ResetPasswordController) UpdatePassword(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		// Обработка ошибок валидации
-		if ve, ok := err.(validator.ValidationErrors); ok {
+		var ve validator.ValidationErrors
+		if errors.As(err, &ve) {
 			for _, fieldErr := range ve {
 				ctx.JSON(400, gin.H{
 					"error": fmt.Sprintf("Field %s is %s", fieldErr.Field(), fieldErr.Tag()),
