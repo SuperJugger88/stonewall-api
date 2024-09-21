@@ -19,7 +19,7 @@ func AuthenticateUser(email, password string, DB *gorm.DB) (string, error) {
 		return "", errors.New("invalid password")
 	}
 
-	token, err := middleware.GenerateJWT(user.ID)
+	token, err := middleware.GenerateJWT(user.ID, nil)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}

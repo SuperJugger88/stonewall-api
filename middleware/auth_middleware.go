@@ -7,14 +7,14 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("Authorization")
-		if token == "" {
+
+		cookie, err := ctx.Cookie("auth_token")
+		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			ctx.Abort()
 			return
 		}
 
-		if err := ValidateJWT(token); err != nil {
+		if err := ValidateJWT(cookie); err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			ctx.Abort()
 			return

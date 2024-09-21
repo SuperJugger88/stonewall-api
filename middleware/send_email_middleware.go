@@ -15,7 +15,7 @@ func SendEmailMiddleware(email []string, stringEmail string, ctx *gin.Context) {
 
 	message := []byte(stringEmail)
 
-	err = smtp.SendMail(env.SmptHost+":"+env.SmptPort, nil, env.FromEmail, email, message)
+	err = smtp.SendMail(env.SmtpHost+":"+env.SmtpPort, nil, env.FromEmail, email, message)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to send email"})
 		return

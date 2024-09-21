@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"errors"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"time"
@@ -14,7 +15,7 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-func GenerateJWT(userID uuid.UUID) (string, error) {
+func GenerateJWT(userID uuid.UUID, ctx *gin.Context) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		UserID: userID,
@@ -29,6 +30,7 @@ func GenerateJWT(userID uuid.UUID) (string, error) {
 		return "", err
 	}
 
+	ctx.SetCookie("auth_token", tokenString, 3600, "/", "localhost:8081", false, true)
 	return tokenString, nil
 }
 
