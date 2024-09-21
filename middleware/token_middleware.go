@@ -30,7 +30,6 @@ func GenerateJWT(userID uuid.UUID, ctx *gin.Context) (string, error) {
 		return "", err
 	}
 
-	ctx.SetCookie("auth_token", tokenString, 3600, "/", "localhost:8081", false, true)
 	return tokenString, nil
 }
 
