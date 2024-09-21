@@ -27,11 +27,13 @@ func (controller AuthController) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	token, err := services.AuthenticateUser(loginDTO.Email, loginDTO.Password, controller.DB)
+	token, err := services.AuthenticateUser(loginDTO.Email, loginDTO.Password, controller.DB, ctx)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"token": token})
+	//ctx.SetCookie("auth_cookie", token, 3600, "/", ".localhost", false, true)
+	ctx.Header("Cookie", token)
+	ctx.JSON(http.StatusOK, gin.H{"success": "true"})
 }

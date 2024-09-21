@@ -2,12 +2,13 @@ package services
 
 import (
 	"errors"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"stonewall-api/app/models"
 	"stonewall-api/middleware"
 )
 
-func AuthenticateUser(email, password string, DB *gorm.DB) (string, error) {
+func AuthenticateUser(email, password string, DB *gorm.DB, ctx *gin.Context) (string, error) {
 
 	var user models.User
 
@@ -19,10 +20,10 @@ func AuthenticateUser(email, password string, DB *gorm.DB) (string, error) {
 		return "", errors.New("invalid password")
 	}
 
-	token, err := middleware.GenerateJWT(user.ID)
+	token, err := middleware.GenerateJWT(user.ID, nil)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
-
+	
 	return token, nil
 }

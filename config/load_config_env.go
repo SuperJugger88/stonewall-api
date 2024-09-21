@@ -4,8 +4,8 @@ import "github.com/spf13/viper"
 
 type Config struct {
 	AppUrl    string `mapstructure:"APP_URL"`
-	SmptHost  string `mapstructure:"SMPT_HOST"`
-	SmptPort  string `mapstructure:"SMPT_PORT"`
+	SmtpHost  string `mapstructure:"SMTP_HOST"`
+	SmtpPort  string `mapstructure:"SMTP_PORT"`
 	FromEmail string `mapstructure:"EMAIL_FROM"`
 }
 

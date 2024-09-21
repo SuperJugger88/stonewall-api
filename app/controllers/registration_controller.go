@@ -54,5 +54,6 @@ func (controller RegistrationController) CreateUser(ctx *gin.Context) {
 	// Отправка ответа клиенту
 	ctx.JSON(http.StatusOK, gin.H{
 		"success": "true",
+		"email":   userDTO.Email,
 	})
 }
