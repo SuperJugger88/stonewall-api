@@ -33,7 +33,6 @@ func (controller AuthController) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	//ctx.SetCookie("auth_cookie", token, 3600, "/", ".localhost", false, true)
-	ctx.Header("Cookie", token)
+	ctx.SetCookie("auth_cookie", token, 3600, "/", ".localhost", false, false)
 	ctx.JSON(http.StatusOK, gin.H{"success": "true"})
 }
