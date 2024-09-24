@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"stonewall-api/app/routes"
 	database "stonewall-api/config"
 )
