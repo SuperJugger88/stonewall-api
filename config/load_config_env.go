@@ -3,10 +3,11 @@ package config
 import "github.com/spf13/viper"
 
 type Config struct {
-	AppUrl    string `mapstructure:"APP_URL"`
-	SmtpHost  string `mapstructure:"SMTP_HOST"`
-	SmtpPort  string `mapstructure:"SMTP_PORT"`
-	FromEmail string `mapstructure:"EMAIL_FROM"`
+	AppUrl      string `mapstructure:"APP_URL"`
+	DatabaseUrl string `mapstructure:"DATABASE_URL"`
+	SmtpHost    string `mapstructure:"SMTP_HOST"`
+	SmtpPort    string `mapstructure:"SMTP_PORT"`
+	FromEmail   string `mapstructure:"EMAIL_FROM"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
