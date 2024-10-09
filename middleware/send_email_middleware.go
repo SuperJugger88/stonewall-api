@@ -4,18 +4,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/smtp"
-	"stonewall-api/config"
+	"os"
 )
 
 func SendEmailMiddleware(email []string, stringEmail string, ctx *gin.Context) {
-	env, err := config.LoadConfig(".")
-	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "failed to receive file0"})
-	}
+	smtpHost := os.Getenv("SMTP_HOST")
+	smtpPort := os.Getenv("SMTP_PORT")
+	emailFrom := os.Getenv("EMAIL_FROM")
 
 	message := []byte(stringEmail)
 
-	err = smtp.SendMail(env.SmtpHost+":"+env.SmtpPort, nil, env.FromEmail, email, message)
+	err := smtp.SendMail(smtpHost+":"+smtpPort, nil, emailFrom, email, message)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to send email"})
 		return
