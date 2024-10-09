@@ -21,7 +21,7 @@ main
 # Go workspace file
 go.sum
 
-# env file
+# .env file
 .env
 
 ## Directory-based project format:
