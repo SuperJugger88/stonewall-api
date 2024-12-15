@@ -1,8 +1,12 @@
 package routes
 
 import (
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"math/rand"
 	"net/http"
 	"os"
 	"stonewall-api/app/controllers"
@@ -11,6 +15,17 @@ import (
 
 func SetupRouter(db *gorm.DB) {
 	router := gin.Default()
+
+	cookieStore := cookie.NewStore([]byte(string(rune(rand.Int()))))
+	router.Use(sessions.Sessions("stonewall_session", cookieStore))
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost", "https://stonewall.io"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type", "Accept-Encoding"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	api := router.Group("/api/v1")
 	{
