@@ -40,7 +40,7 @@ func (controller AuthController) LoginUser(ctx *gin.Context) {
 		MaxAge:   3600,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   false,
-		HttpOnly: false,
+		HttpOnly: true,
 		Path:     "/",
 		Domain:   ".localhost",
 	})
@@ -50,5 +50,8 @@ func (controller AuthController) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"success": true})
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"email":   loginDTO.Email,
+	})
 }

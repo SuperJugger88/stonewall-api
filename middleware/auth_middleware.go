@@ -8,7 +8,7 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		cookie, err := ctx.Cookie("auth_cookie")
+		cookie, err := ctx.Cookie("stonewall_session")
 		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			return
