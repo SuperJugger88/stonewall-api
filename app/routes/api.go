@@ -11,12 +11,13 @@ import (
 	"os"
 	"stonewall-api/app/controllers"
 	"stonewall-api/middleware"
+	"strconv"
 )
 
 func SetupRouter(db *gorm.DB) {
 	router := gin.Default()
 
-	cookieStore := cookie.NewStore([]byte(string(rune(rand.Int()))))
+	cookieStore := cookie.NewStore([]byte(strconv.Itoa(rand.Int())))
 	router.Use(sessions.Sessions("stonewall_session", cookieStore))
 
 	router.Use(cors.New(cors.Config{
